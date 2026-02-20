@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Assessment Agent</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<!-- Bootstrap -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Font -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg: linear-gradient(135deg, #c9b6f3 0%, #8ec5fc 100%);
+  --card:#ffffff;
+  --text:#0f172a;
+  --muted:#6b7280;
+  --primary:#4f46e5;
+  --green:#22c55e;
+  --yellow:#f59e0b;
+  --red:#ef4444;
+  --purple:#8b5cf6;
+  --radius:18px;
+}
+
+body{
+  font-family:Inter,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+}
+
+/* NAVBAR */
+.navbar{
+  background:#fff;
+  box-shadow:0 6px 20px rgba(0,0,0,.06);
+  min-height: 72px;
+}
+
+.brand {
+  width: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.brand img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+
+
+/* PAGES */
+.page{display:none}
+.page.active{display:block}
+
+/* HERO */
+.hero{
+  background:linear-gradient(135deg,#4f46e5,#7c3aed);
+  color:#fff;
+  border-radius:var(--radius);
+  padding:28px;
+  margin-bottom:24px;
+}
+
+/* CARDS */
+.card{
+  border:none;
+  border-radius:var(--radius);
+  box-shadow:0 10px 25px rgba(0,0,0,.07);
+  transition:.3s;
+}
+.card:hover{transform:translateY(-4px)}
+
+.card-green{border-left:6px solid var(--green)}
+.card-yellow{border-left:6px solid var(--yellow)}
+.card-red{border-left:6px solid var(--red)}
+.card-purple{border-left:6px solid var(--purple)}
+
+.progress{height:8px;border-radius:8px}
+
+/* BUTTONS */
+.btn-green{background:linear-gradient(135deg,#22c55e,#16a34a);color:#fff}
+.btn-yellow{background:linear-gradient(135deg,#f59e0b,#f97316);color:#fff}
+.btn-pink{background:linear-gradient(135deg,#ec4899,#f43f5e);color:#fff}
+.btn-purple{background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff}
+  
+
+
+/* CHECKLIST */
+.checklist li{margin-bottom:6px}
+.check-done{color:#16a34a}
+.check-pending{color:#9ca3af}<style>
+/* ===== AESTHETIC ASSESSMENT BOX ===== */
+.assessment-box{
+  background:#ffffff;
+  border-radius:12px;              /* square but soft */
+  box-shadow:0 12px 30px rgba(0,0,0,.08);
+  padding:22px;
+  border:1px solid #eef2ff;
+}
+
+.assessment-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:16px;
+}
+
+.assessment-title{
+  font-weight:600;
+  color:#1e293b;
+}
+
+.assessment-score{
+  font-size:28px;
+  font-weight:700;
+  color:#4f46e5;
+}
+
+.assessment-progress{
+  height:10px;
+  border-radius:6px;
+  background:#e5e7eb;
+  overflow:hidden;
+  margin-bottom:14px;
+}
+
+.assessment-progress-bar{
+  height:100%;
+  transition:width .4s ease;
+  background:linear-gradient(135deg,#6366f1,#8b5cf6);
+}
+
+.assessment-feedback{
+  font-size:14px;
+  padding:10px 12px;
+  border-radius:8px;
+  background:#f8fafc;
+  color:#475569;
+  border:1px solid #e5e7eb;
+  text-align:center;
+}
+</style>
+
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg px-4">
+  <div class="container-fluid">
+    <div class="d-flex align-items-center gap-2">
+      <div class="brand">
+  <img src="novus-logo.png" alt="Novus Logo">
+</div>
+
+
+      <div>
+        <strong>NOVUS</strong><br>
+        <small class="text-muted">Assessment Agent</small>
+      </div>
+    </div>
+    <ul class="navbar-nav ms-auto gap-3">
+      <li><a class="nav-link" href="#dashboard">Dashboard</a></li>
+      <li><a class="nav-link" href="quiz.html">Quiz</a></li>
+      <li><a class="nav-link" href="coding.html">Coding</a></li>
+      <li><a class="nav-link" href="assignment.html">Assignments</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container my-4">
+
+<!-- ================= DASHBOARD ================= -->
+<div id="dashboard" class="page active">
+
+<div class="hero row align-items-center">
+  <div class="col-md-8">
+    <h3>Welcome back👋</h3>
+    <p class="mb-1">Software Engineering • ID: EMP001</p>
+    <small>Joined: February 15, 2026</small>
+  </div>
+  <div class="col-md-4 text-center">
+    <h2 id="overallProgress">68%</h2>
+    <small>Overall Progress</small>
+  </div>
+</div>
+
+<div class="row g-4">
+
+<!-- Daily Quiz -->
+<div class="col-md-4">
+  <div class="card card-green p-4">
+    <div class="d-flex justify-content-between">
+      <h6>Daily Quiz</h6>
+      <span class="badge bg-success">Completed</span>
+    </div>
+    <p class="text-muted mt-2">Latest Score</p>
+    <h2 id="quizScore" class="text-success">85 / 100</h2>
+    <div class="alert alert-success py-2">✔ Today’s quiz completed</div>
+    <button class="btn btn-green w-100" onclick="go('quiz')">View Details</button>
+  </div>
+</div>
+
+<!-- Coding -->
+<div class="col-md-4">
+  <div class="card card-yellow p-4">
+    <div class="d-flex justify-content-between">
+      <h6>Coding Challenge</h6>
+      <span class="badge bg-warning text-dark">In Progress</span>
+    </div>
+    <p class="mt-2">Progress</p>
+    <h3 id="codingProgressText" class="text-warning">60%</h3>
+    <div class="progress mb-2">
+      <div id="codingProgressBar" class="progress-bar bg-warning" style="width:60%"></div>
+    </div>
+    <div class="alert alert-warning py-2">⏱ 2 challenges remaining</div>
+    <button class="btn btn-yellow w-100" onclick="go('coding')">Continue Challenge</button>
+  </div>
+</div>
+
+<!-- Workflow -->
+<div class="col-md-4">
+  <div class="card p-4">
+    <div class="d-flex justify-content-between">
+      <h6>Workflow Progress</h6>
+      <strong>3 / 5 Complete</strong>
+    </div>
+    <div class="progress my-2">
+      <div class="progress-bar bg-primary" style="width:60%"></div>
+    </div>
+    <ul class="list-unstyled checklist">
+      <li class="check-done">✔ Profile Updated</li>
+      <li class="check-done">✔ Daily Quiz Completed</li>
+      <li class="check-done">✔ Coding Submitted</li>
+      <li class="check-pending">⬜ Assignment Submitted</li>
+      <li class="check-pending">⬜ Certification Completed</li>
+    </ul>
+  </div>
+</div>
+
+<!-- Assignments -->
+<div class="col-md-4">
+  <div class="card card-red p-4">
+    <div class="d-flex justify-content-between">
+      <h6>Assignments</h6>
+      <span class="badge bg-danger">Pending</span>
+    </div>
+    <p class="mt-2">Submitted</p>
+    <h3>2 / 3</h3>
+    <div class="progress mb-2">
+      <div class="progress-bar bg-danger" style="width:66%"></div>
+    </div>
+    <div class="alert alert-danger py-2">⚠ 1 assignment due soon</div>
+    <button class="btn btn-pink w-100" onclick="go('assignments')">Submit Assignment</button>
+  </div>
+</div>
+<!-- ================= OVERALL ASSESSMENT (REDESIGNED) ================= -->
+<div class="col-md-4">
+  <div class="assessment-box">
+
+    <div class="assessment-header">
+      <div class="assessment-title">Overall Assessment</div>
+      <div id="assessmentScore" class="assessment-score">--%</div>
+    </div>
+
+    <div class="assessment-progress">
+      <div id="assessmentBar"
+           class="assessment-progress-bar"
+           style="width:0%">
+      </div>
+    </div>
+
+    <div id="assessmentFeedback" class="assessment-feedback">
+      Complete activities to see feedback.
+    </div>
+
+  </div>
+</div>
+
+<script>
+/* ================= OVERALL ASSESSMENT LOGIC (ADDED ONLY) ================= */
+
+function calculateAssessment() {
+  // Quiz score (existing)
+  const quizText = document.getElementById("quizScore")?.innerText || "0 / 100";
+  const quizValue = parseInt(quizText.split("/")[0]) || 0;
+
+  // Coding progress (existing)
+  const codingText = document.getElementById("codingProgressText")?.innerText || "0%";
+  const codingValue = parseInt(codingText.replace("%","")) || 0;
+
+  // Overall calculation (simple average)
+  const overall = Math.round((quizValue + codingValue) / 2);
+
+  // Update UI
+  document.getElementById("assessmentScore").innerText = overall + "%";
+  document.getElementById("assessmentBar").style.width = overall + "%";
+
+  const feedbackBox = document.getElementById("assessmentFeedback");
+
+  if (overall >= 80) {
+    feedbackBox.className = "alert alert-success";
+    feedbackBox.innerText =
+      "Excellent performance. You are consistently meeting assessment expectations.";
+  }
+  else if (overall >= 50) {
+    feedbackBox.className = "alert alert-warning";
+    feedbackBox.innerText =
+      "Good progress. Focus on improving weak areas to increase your score.";
+  }
+  else {
+    feedbackBox.className = "alert alert-danger";
+    feedbackBox.innerText =
+      "Needs improvement. Please complete pending tasks and revise concepts.";
+  }
+}
+
+// Auto‑update when page loads
+window.addEventListener("load", calculateAssessment);
+
+// Auto‑update when quiz or coding updates
+const originalQuiz = window.completeQuiz;
+window.completeQuiz = function () {
+  originalQuiz();
+  setTimeout(calculateAssessment, 300);
+};
+
+const originalCoding = window.increaseCoding;
+window.increaseCoding = function () {
+  originalCoding();
+  setTimeout(calculateAssessment, 300);
+};
+</script>
+
+
+<!-- Quick Actions -->
+<div class="col-md-4">
+  <div class="card p-4">
+    <h6>Quick Actions</h6>
+    <button class="btn btn-primary w-100 mb-2" onclick="go('quiz')">Start Today’s Quiz</button>
+    
+
+    <button class="btn btn-pink w-100 mb-2" onclick="go('coding')">Practice Coding</button>
+    <button class="btn btn-green w-100">Update Profile</button>
+  </div>
+</div>
+
+</div>
+</div>
+
+<!-- ================= QUIZ ================= -->
+<div id="quiz" class="page">
+  <div class="card p-4">
+    <h4>Daily Quiz</h4>
+    <p>Daily quiz Total Question of 10 </p>
+    <center><a href="quiz.html"><button style="background-color: orange;">StartQuiz</button></a></center>
+  </div>
+</div>
+
+<!-- ================= CODING ================= -->
+<div id="coding" class="page">
+  <div class="card p-4">
+    <h4>Coding Challenges</h4>
+    <ul>
+      <li>QUESTION OF 3 CODE SNIPPETS</li>
+      <li>Easy fresher level</li>  
+    </ul>
+    <center><a href="coding.html"><button style="background-color: lavender;">Start Coding</button></a></center>
+  </div>
+</div>
+
+<!-- ================= ASSIGNMENTS ================= -->
+<div id="assignments" class="page">
+  <div class="card p-4">
+    <h4>Assignments</h4>
+    <p>Total assignments of 3 Week</p>
+    <center><a href="assignment.html"><button style="background-color: pink;">Start assignment</button></a></center>
+  </div>
+</div>
+
+</div>
+
+<script>
+function go(page){
+  location.hash = page
+}
+
+function showPage(){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'))
+  const id = location.hash.replace('#','') || 'dashboard'
+  document.getElementById(id)?.classList.add('active')
+}
+window.addEventListener('hashchange',showPage)
+showPage()
+
+/* Dummy interactions */
+function completeQuiz(){
+  document.getElementById('quizScore').innerText = '90 / 100'
+  alert('Quiz submitted! Score updated.')
+  go('dashboard')
+}
+function increaseCoding(){
+  document.getElementById('codingProgressText').innerText = '80%'
+  document.getElementById('codingProgressBar').style.width = '80%'
+  alert('Challenge submitted! Progress updated.')
+  go('dashboard')
+}
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+<script>
+/* ================= QUIZ DATA ================= */
+const quizData = [
+  {
+    question: "What does HTML stand for?",
+    options: [
+      "Hyper Text Markup Language",
+      "High Text Machine Language",
+      "Hyperlinks and Text Markup Language",
+      "Home Tool Markup Language"
+    ],
+    answer: 0
+  },
+  {
+    question: "Which language is used for styling web pages?",
+    options: ["HTML", "JQuery", "CSS", "XML"],
+    answer: 2
+  },
+  {
+    question: "Which is not a JavaScript framework?",
+    options: ["React", "Angular", "Vue", "Django"],
+    answer: 3
+  }
+];
+
+let currentQuestion = 0;
+let score = 0;
+let selectedOption = null;
+
+/* INIT */
+document.getElementById("qTotal").innerText = quizData.length;
+loadQuestion();
+
+/* LOAD QUESTION */
+function loadQuestion() {
+  const q = quizData[currentQuestion];
+  document.getElementById("qIndex").innerText = currentQuestion + 1;
+  document.getElementById("questionText").innerText = q.question;
+
+  const optionsDiv = document.getElementById("options");
+  optionsDiv.innerHTML = "";
+
+  q.options.forEach((opt, index) => {
+    optionsDiv.innerHTML += `
+      <div class="form-check mb-2">
+        <input class="form-check-input"
+               type="radio"
+               name="option"
+               id="opt${index}"
+               onclick="selectOption(${index})">
+        <label class="form-check-label" for="opt${index}">
+          ${opt}
+        </label>
+      </div>
+    `;
+  });
+
+  document.getElementById("nextBtn").classList.remove("d-none");
+  document.getElementById("submitBtn").classList.add("d-none");
+}
+
+/* SELECT */
+function selectOption(index) {
+  selectedOption = index;
+}
+
+/* NEXT */
+function nextQuestion() {
+  if (selectedOption === null) {
+    alert("Please select an answer");
+    return;
+  }
+
+  if (selectedOption === quizData[currentQuestion].answer) {
+    score++;
+  }
+
+  selectedOption = null;
+  currentQuestion++;
+
+  if (currentQuestion < quizData.length - 1) {
+    loadQuestion();
+  } else {
+    loadQuestion();
+    document.getElementById("nextBtn").classList.add("d-none");
+    document.getElementById("submitBtn").classList.remove("d-none");
+  }
+}
+
+/* SUBMIT */
+function submitQuiz() {
+  if (selectedOption === quizData[currentQuestion].answer) {
+    score++;
+  }
+
+  const percentage = Math.round((score / quizData.length) * 100);
+
+  document.getElementById("quizResult").classList.remove("d-none");
+  document.getElementById("quizResult").innerHTML =
+    `🎉 Quiz Completed! <strong>Score: ${percentage}%</strong>`;
+
+  /* UPDATE DASHBOARD */
+  document.getElementById("quizScore").innerText = `${percentage} / 100`;
+  document.getElementById("overallProgress").innerText = `${percentage}%`;
+  element.style.width = "80%"
+
+
+  setTimeout(() => {
+    go("dashboard");
+  }, 1500);
+}
+</script>
+<div id="quiz" class="page">
+  <div class="card p-4">
+    <h4>Daily Quiz</h4>
+
+    <p>
+      Question <span id="qIndex"></span> /
+      <span id="qTotal"></span>
+    </p>
+
+    <h5 id="questionText"></h5>
+
+    <div id="options" class="mt-3"></div>
+
+    <button id="nextBtn"
+      class="btn btn-primary mt-3"
+      onclick="nextQuestion()">
+      Next
+    </button>
+    <a href="quiz.html">
+    <button id="submitBtn"
+      class="btn btn-success mt-3 d-none"
+      onclick="submitQuiz()">
+      Submit Quiz
+    </button>
+    </a>
+    <div id="quizResult"
+      class="alert alert-success mt-3 d-none">
+    </div>
+  </div>
+</div>
+<script>
+function submitAssignment() {
+  const fileInput = document.getElementById("assignmentFile");
+  if (fileInput.files.length === 0) {
+    alert("Please select a file");
+    return;
+  }
+
+  document.getElementById("assignmentStatus").classList.remove("d-none");
+  setTimeout(() => {
+    go("dashboard");
+  }, 1500);
+}
+</script>
+<!-- ================= ASSIGNMENTS ================= -->
+<div id="assignments" class="page">
+  <div class="card p-4">
+    <h4>Assignments</h4>
+    <p class="text-muted">Upload your assignment files</p>
+
+    <input type="file"
+      id="assignmentFile"
+      class="form-control mb-3"
+      multiple
+    >
+
+    <button class="btn btn-danger" onclick="submitAssignment()">
+      Submit Assignment
+    </button>
+
+    <div id="assignmentStatus" class="alert alert-success mt-3 d-none">
+      ✅ Assignment submitted successfully!
+    </div>
+  </div>
+</div>
+<script type="module" src="assessment.js"></script>
+<script type="module" src="firebase.js"></script>
