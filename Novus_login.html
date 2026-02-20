@@ -75,8 +75,13 @@ button{
 <input type="password" id="loginPassword" placeholder="Enter password">
 
 <!-- Two separate buttons for Fresher and Admin -->
-<button class="primary-btn" onclick="login('fresher')">Sign In as Fresher</button>
-<button class="primary-btn" onclick="login('admin')">Sign In as Admin</button>
+<a href="Dashboard.html">
+  <button class="primary-btn">Sign In as Fresher</button>
+</a>
+
+<a href="AdminDashboard.html">
+  <button class="primary-btn">Sign In as Admin</button>
+</a>
 
 <div class="links">
 <span onclick="showCreate()">Sign Up</span>
@@ -175,3 +180,4 @@ function resetPassword(){
 
 </body>
 </html>
+
