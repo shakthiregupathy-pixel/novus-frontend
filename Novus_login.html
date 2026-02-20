@@ -3,9 +3,7 @@
 <head>
 <title>NOVUS</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <style>
-/* (Your entire CSS remains same — I did not change design) */
 body{
     margin:0;
     font-family:Segoe UI, sans-serif;
@@ -41,7 +39,7 @@ body::after{
 h1{text-align:center;margin-bottom:5px;font-size:30px;letter-spacing:2px;color:#6a5acd;}
 .sub{text-align:center;font-size:13px;color:#6b7280;margin-bottom:20px;}
 label{font-size:13px;font-weight:500;}
-input, select{
+input{
     width:100%;padding:10px;margin:8px 0 14px 0;
     border-radius:10px;border:1px solid #e5e7eb;
     font-size:14px;background:#f9fafb;box-sizing:border-box;
@@ -49,6 +47,7 @@ input, select{
 button{
     width:100%;padding:11px;border:none;border-radius:10px;
     font-weight:500;cursor:pointer;
+    margin-bottom:8px;
 }
 .primary-btn{
     background: linear-gradient(270deg, #6a5acd, #8a2be2, #6a5acd);
@@ -69,19 +68,15 @@ button{
 <h1>NOVUS</h1>
 <div class="sub">Maverick Onboarding System</div>
 
-<label>Login As</label>
-<select>
-<option>Fresher</option>
-<option>Admin</option>
-</select>
-
 <label>Official Email</label>
 <input type="email" id="loginEmail" placeholder="Enter your company email">
 
 <label>Password</label>
 <input type="password" id="loginPassword" placeholder="Enter password">
 
-<a href="Dashboard.html" class="primary-btn">Sign In</a>
+<!-- Two separate buttons for Fresher and Admin -->
+<button class="primary-btn" onclick="login('fresher')">Sign In as Fresher</button>
+<button class="primary-btn" onclick="login('admin')">Sign In as Admin</button>
 
 <div class="links">
 <span onclick="showCreate()">Sign Up</span>
@@ -89,7 +84,7 @@ button{
 </div>
 </div>
 
-<!-- SIGN UP -->
+<!-- CREATE ACCOUNT -->
 <div id="createForm" class="hidden">
 <h1>NOVUS</h1>
 <div class="sub">Create Account</div>
@@ -119,7 +114,7 @@ button{
 </div>
 </div>
 
-<!-- FORGOT -->
+<!-- FORGOT PASSWORD -->
 <div id="forgotForm" class="hidden">
 <h1>NOVUS</h1>
 <div class="sub">Reset Password</div>
@@ -136,7 +131,47 @@ button{
 
 </div>
 
+<script>
+function showCreate(){
+    document.getElementById('loginForm').classList.add('hidden');
+    document.getElementById('forgotForm').classList.add('hidden');
+    document.getElementById('createForm').classList.remove('hidden');
+}
+function showForgot(){
+    document.getElementById('loginForm').classList.add('hidden');
+    document.getElementById('createForm').classList.add('hidden');
+    document.getElementById('forgotForm').classList.remove('hidden');
+}
+function showLogin(){
+    document.getElementById('createForm').classList.add('hidden');
+    document.getElementById('forgotForm').classList.add('hidden');
+    document.getElementById('loginForm').classList.remove('hidden');
+}
 
+function login(role){
+    const email = document.getElementById('loginEmail').value;
+    const password = document.getElementById('loginPassword').value;
 
+    if(!email || !password){
+        alert("Please enter both email and password");
+        return;
+    }
 
+    if(role === 'fresher'){
+        alert(`Logging in as Fresher: ${email}`);
+    } else if(role === 'admin'){
+        alert(`Logging in as Admin: ${email}`);
+    }
+}
 
+function signup(){
+    alert("Signup functionality here");
+}
+
+function resetPassword(){
+    alert("Reset password functionality here");
+}
+</script>
+
+</body>
+</html>
