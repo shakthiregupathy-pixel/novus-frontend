@@ -322,6 +322,7 @@ function calculateProfile() {
 
 
 <script type="module">
+    <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
@@ -332,38 +333,74 @@ const firebaseConfig = {
   projectId: "novus-9dfb8"
 };
 
-
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
+
+// FUNCTION TO LOAD SCORES
+async function loadScores(empId){
+
+  const scoreRef = doc(db,"assessments",empId);
+  const scoreSnap = await getDoc(scoreRef);
+
+  if(scoreSnap.exists()){
+
+    const scoreData = scoreSnap.data();
+
+    document.getElementById("quiz").value = scoreData.quizScore || 0;
+    document.getElementById("coding").value = scoreData.codingScore || 0;
+    document.getElementById("assignment").value = scoreData.assignmentScore || 0;
+
+  }else{
+
+    console.log("Scores not found for this employee");
+
+  }
+
+}
+
+
+// AUTH CHECK
 onAuthStateChanged(auth, async (user) => {
   if (user) {
     try {
+
       const docRef = doc(db, "users", user.uid);
       const docSnap = await getDoc(docRef);
 
       if (docSnap.exists()) {
+
         const data = docSnap.data();
 
+        // LOAD NAME
         document.getElementById("name").innerText = data.name || "No Name";
 
+        // GET EMPLOYEE ID
+        const empId = data.employee_id || data.employeeId || "EMP1001";
+
+        // LOAD SCORES FROM FIREBASE
+        loadScores(empId);
+
       } else {
+
         document.getElementById("name").innerText = "No Data Found";
+
       }
 
     } catch (error) {
+
       console.error(error);
       document.getElementById("name").innerText = "Error loading";
+
     }
 
   } else {
+
     document.getElementById("name").innerText = "Not Logged In";
+
   }
 });
-
 </script>
-
-
 </body>
 </html>
