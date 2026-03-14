@@ -340,10 +340,22 @@ const db = getFirestore(app);
 // FUNCTION TO LOAD SCORES
 async function loadScores(empId){
 
-  console.log("Fetching scores for:", empId);
-const docRef = doc(db, "assessments", empId);
-  const docSnap = await getDoc(docRef);
+  const querySnapshot = await getDocs(collection(db, "coding_submissions"));
 
+  querySnapshot.forEach((doc) => {
+
+    const data = docItem.data();
+
+
+    if(data.userId === empId){
+
+      document.getElementById("coding").value = data.score || 0;
+
+    }
+
+  });
+
+}
   if (docSnap.exists()) {
 
     const data = docSnap.data();
@@ -366,6 +378,13 @@ onAuthStateChanged(auth, async (user) => {
 
       const docRef = doc(db, "users", user.uid);
       const docSnap = await getDoc(docRef);
+const data = docSnap.data();
+
+document.getElementById("name").innerText = data.name;
+
+const empId = data.employee_id;
+
+loadScores(empId);
 
       if (docSnap.exists()) {
 
