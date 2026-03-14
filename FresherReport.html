@@ -6,6 +6,7 @@
     <title>Mavericks Fresher Reporting</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Load jsPDF from a reliable CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
     <style>
@@ -106,8 +107,8 @@
         </div>
 
         <div class="mt-4 d-flex gap-2">
-            <button class="btn btn-generate" onclick="generateReport()">Calculate Performance</button>
-            <button class="btn btn-success rounded-pill" onclick="generateCertificate()">Generate Certificate</button>
+            <button class="btn btn-generate" onclick="window.generateReport()">Calculate Performance</button>
+            <button class="btn btn-success rounded-pill" onclick="window.generateCertificate()">Generate Certificate</button>
         </div>
     </div>
 
@@ -119,7 +120,7 @@
         <h6>Recruitment Feedback</h6>
         <p id="feedback" class="text-muted italic">-</p>
 
-        <button class="btn btn-download mt-3 px-4 py-2" onclick="downloadPDF()">Download Clean PDF Report</button>
+        <button class="btn btn-download mt-3 px-4 py-2" onclick="window.downloadPDF()">Download Clean PDF Report</button>
     </div>
 
 </div>
@@ -129,8 +130,9 @@
     import { getAuth, onAuthStateChanged, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
     import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
+    // Configuration check
     const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {
-        apiKey: "AIzaSyDPe0Zp69bnM9251w0FfnH1UPhGedGh4qo",
+        apiKey: "",
         authDomain: "novus-9dfb8.firebaseapp.com",
         projectId: "novus-9dfb8",
         storageBucket: "novus-9dfb8.firebasestorage.app",
@@ -147,7 +149,7 @@
     let currentFeedbackText = "-";
     let currentSkillLevel = "-";
 
-    // Auth Initialization
+    // Auth Initialization (Mandatory Pattern)
     async function initAuth() {
         if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
             await signInWithCustomToken(auth, __initial_auth_token);
@@ -161,9 +163,8 @@
         if (!user) return;
 
         try {
-            // Updated Path to follow Rule 1: /artifacts/{appId}/public/data/{collection} 
-            // Using "users" as requested but checking both possible paths for data availability
-            const docRef = doc(db, "users", user.uid);
+            // Using Mandatory Path: /artifacts/{appId}/public/data/users
+            const docRef = doc(db, "artifacts", appId, "public", "data", "users", user.uid);
             const docSnap = await getDoc(docRef);
 
             if (docSnap.exists()) {
@@ -180,6 +181,7 @@
         }
     });
 
+    // Performance calculation logic
     window.generateReport = function() {
         const quiz = parseFloat(document.getElementById("quiz").value) || 0;
         const coding = parseFloat(document.getElementById("coding").value) || 0;
@@ -205,7 +207,13 @@
         document.getElementById("feedback").innerText = currentFeedbackText;
     };
 
+    // PDF Generation Logic
     window.downloadPDF = function() {
+        if (!window.jspdf) {
+            console.error("jsPDF library not loaded");
+            return;
+        }
+
         const { jsPDF } = window.jspdf;
         const pdf = new jsPDF();
 
@@ -319,7 +327,9 @@ The candidate exhibits the required adaptability and technical proficiency for c
         pdf.save(`${name.replace(/\s+/g, '_')}_Training_Report.pdf`);
     };
 
+    // Certificate Generation Logic
     window.generateCertificate = function() {
+        if (!window.jspdf) return;
         const { jsPDF } = window.jspdf;
         const pdf = new jsPDF("landscape");
         const name = document.getElementById("name").value || "Candidate";
@@ -338,7 +348,7 @@ The candidate exhibits the required adaptability and technical proficiency for c
         };
         
         img.onerror = function() {
-            // Fallback if image fails to load
+            // Fallback layout if image fails
             pdf.setFillColor(245, 245, 245);
             pdf.rect(0, 0, 297, 210, 'F');
             pdf.setLineWidth(2);
