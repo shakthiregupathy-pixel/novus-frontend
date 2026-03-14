@@ -340,20 +340,25 @@ const db = getFirestore(app);
 // FUNCTION TO LOAD SCORES
 async function loadScores(empId){
 
-  const querySnapshot = await getDocs(collection(db,"assessment_results"));
+  console.log("Fetching scores for:", empId);
 
-  querySnapshot.forEach((docItem) => {
+  const docRef = doc(db, "assessment_results", empId);
+  const docSnap = await getDoc(docRef);
 
-    const data = docItem.data();
+  if (docSnap.exists()) {
 
-    if(data.userId === empId){
+    const data = docSnap.data();
+    console.log("Data from Firebase:", data);
 
-      document.getElementById("quiz").value = data.quiz || 0;
-      document.getElementById("coding").value = data.coding || 0;
-      document.getElementById("assignment").value = data.assignment || 0;
+    document.getElementById("quiz").value = data.quiz || 0;
+    document.getElementById("coding").value = data.coding || 0;
+    document.getElementById("assignment").value = data.assignment || 0;
 
-    }
+  } else {
+    console.log("No scores document found");
+  }
 
+}
   });
 
 }
@@ -377,7 +382,7 @@ onAuthStateChanged(auth, async (user) => {
 
         // LOAD SCORES FROM FIREBASE
           const empId = data.employee_id || data.employeeId || "EMP240728";
-          console.log("Employee ID from users collection:", empId);
+          console.log("Employee ID :", empId);
         loadScores(empId);
 
       } else {
