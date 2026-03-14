@@ -325,7 +325,7 @@ function calculateProfile() {
     <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getFirestore, doc, getDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDPe0Zp69bnM9251w0FfnH1UPhGedGh4qo",
@@ -339,28 +339,25 @@ const db = getFirestore(app);
 
 
 // FUNCTION TO LOAD SCORES
-async function loadScores(empId){
+async function loadScores(){
 
-  const scoreRef = doc(db,"assessments",empId);
-  const scoreSnap = await getDoc(scoreRef);
+  const querySnapshot = await getDocs(collection(db,"assessment_results"));
 
-  if(scoreSnap.exists()){
+  querySnapshot.forEach((docSnap) => {
 
-    const scoreData = scoreSnap.data();
+    const data = docSnap.data();
 
-    document.getElementById("quiz").value = scoreData.quizScore || 0;
-    document.getElementById("coding").value = scoreData.codingScore || 0;
-    document.getElementById("assignment").value = scoreData.assignmentScore || 0;
+    if(data.userId === empId){
 
-  }else{
+      document.getElementById("quiz").value = data.quiz || 0;
+      document.getElementById("coding").value = data.coding || 0;
+      document.getElementById("assignment").value = data.assignment || 0;
 
-    console.log("Scores not found for this employee");
+    }
 
-  }
+  });
 
 }
-
-
 // AUTH CHECK
 onAuthStateChanged(auth, async (user) => {
   if (user) {
