@@ -322,7 +322,6 @@ function calculateProfile() {
 
 
 <script type="module">
-    <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import { getFirestore, doc, getDoc, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
@@ -339,13 +338,13 @@ const db = getFirestore(app);
 
 
 // FUNCTION TO LOAD SCORES
-async function loadScores(){
+async function loadScores(empId){
 
   const querySnapshot = await getDocs(collection(db,"assessment_results"));
 
-  querySnapshot.forEach((docSnap) => {
+  querySnapshot.forEach((docItem) => {
 
-    const data = docSnap.data();
+    const data = docItem.data();
 
     if(data.userId === empId){
 
