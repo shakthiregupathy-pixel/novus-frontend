@@ -173,8 +173,7 @@
                 document.getElementById("empid").value = data.employeeId || "N/A";
                 document.getElementById("dept").value = data.department || "N/A";
                 document.getElementById("role").value = data.role || "N/A";
-           document.getElementById("phase").value = data.phase || "Foundation";
-                document.getElementById("certs").value = data.certs || "N/A";
+document.getElementById("phase").value = "Foundation";document.getElementById("certs").value = data.certs || "N/A";
             }
         } catch (error) {
             console.error("Error fetching user data:", error);
@@ -206,11 +205,11 @@
         document.getElementById("skill").innerText = currentSkillLevel;
         document.getElementById("feedback").innerText = currentFeedbackText;
     };
-       window.downloadPDF = function() {
 
-     alert("PDF function started");   // add this line
+   window.downloadPDF = function() {
 
-     const { jsPDF } = window.jspdf;
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF();
 
     const name = document.getElementById("name").value || "Candidate";
     const empid = document.getElementById("empid").value || "-";
