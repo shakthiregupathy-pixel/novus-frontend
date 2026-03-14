@@ -184,7 +184,7 @@ ul {
         <input type="number" id="quiz" class="form-control" placeholder="quiz">
     </div>
     <div class="col-md-4">
-        <input type="number" id="coding" class="form-control" placeholder="coding>
+        <input type="number" id="coding" class="form-control" placeholder="coding">
     </div>
     <div class="col-md-4">
         <input type="number" id="assignment" class="form-control" placeholder="assignment">
@@ -341,8 +341,7 @@ const db = getFirestore(app);
 async function loadScores(empId){
 
   console.log("Fetching scores for:", empId);
-
-  const docRef = doc(db, "assessment_results", empId);
+const docRef = doc(db, "assessments", empId);
   const docSnap = await getDoc(docRef);
 
   if (docSnap.exists()) {
@@ -359,8 +358,7 @@ async function loadScores(empId){
   }
 
 }
-  });
-
+ 
 }
 // AUTH CHECK
 onAuthStateChanged(auth, async (user) => {
