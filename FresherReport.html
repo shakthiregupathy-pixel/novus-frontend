@@ -145,7 +145,7 @@ let overallScore = 0;
 let feedbackText = "";
 let skillLevel = "";
 
-// 🔐 AUTO LOAD LOGGED-IN FRESHER
+// AUTO LOAD LOGGED-IN FRESHER
 onAuthStateChanged(auth, async (user) => {
 
 if (!user) {
@@ -272,7 +272,7 @@ window.generateCertificate = function() {
         // Add full background image
         doc.addImage(img, "PNG", 0, 0, 297, 210);
 
-        // 🔥 Add dynamic name
+        // Add dynamic name
         doc.setFont("helvetica", "bold");
         doc.setFontSize(28);
 
