@@ -349,10 +349,9 @@ const docRef = doc(db, "assessments", empId);
     const data = docSnap.data();
     console.log("Data from Firebase:", data);
 
-    document.getElementById("quiz").value = data.quiz || 0;
-    document.getElementById("coding").value = data.coding || 0;
-    document.getElementById("assignment").value = data.assignment || 0;
-
+   document.getElementById("quiz").value = data.quizScore || 0;
+document.getElementById("coding").value = data.codingScore || 0;
+document.getElementById("assignment").value = data.assignmentScore || 0;
   } else {
     console.log("No scores document found");
   }
