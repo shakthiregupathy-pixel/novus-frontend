@@ -207,10 +207,13 @@ document.getElementById("phase").value = "Foundation";document.getElementById("c
     };
 window.downloadPDF = function() {
 
-    alert("PDF function started");
+    if (!window.jspdf) {
+        alert("PDF library not loaded yet. Please refresh the page.");
+        return;
+    }
 
     const { jsPDF } = window.jspdf;
-    const pdf = new jsPDF();   // ✅ THIS LINE WAS MISSING
+    const pdf = new jsPDF();
 
     const name = document.getElementById("name").value || "Candidate";
     const empid = document.getElementById("empid").value || "-";
