@@ -207,126 +207,86 @@
         document.getElementById("feedback").innerText = currentFeedbackText;
     };
 
-    // PDF Generation Logic
-    window.downloadPDF = function() {
-        if (!window.jspdf) {
-            console.error("jsPDF library not loaded");
-            return;
-        }
+   window.downloadPDF = function() {
 
-        const { jsPDF } = window.jspdf;
-        const pdf = new jsPDF();
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF();
 
-        const name = document.getElementById("name").value || "Candidate";
-        const empid = document.getElementById("empid").value || "-";
-        const dept = document.getElementById("dept").value || "-";
-        const role = document.getElementById("role").value || "-";
-        const phase = document.getElementById("phase").value || "-";
-        const certs = document.getElementById("certs").value || "-";
-        const quiz = document.getElementById("quiz").value || "0";
-        const coding = document.getElementById("coding").value || "0";
-        const assignment = document.getElementById("assignment").value || "0";
+    const name = document.getElementById("name").value || "Candidate";
+    const empid = document.getElementById("empid").value || "-";
+    const dept = document.getElementById("dept").value || "-";
+    const role = document.getElementById("role").value || "-";
+    const phase = document.getElementById("phase").value || "-";
+    const certs = document.getElementById("certs").value || "-";
 
-        let y = 20;
+    const quiz = document.getElementById("quiz").value || "0";
+    const coding = document.getElementById("coding").value || "0";
+    const assignment = document.getElementById("assignment").value || "0";
 
-        // BORDER
-        pdf.setLineWidth(0.5);
-        pdf.rect(10, 10, 190, 277);
+    let y = 20;
 
-        // HEADER
-        pdf.setFont("helvetica", "bold");
-        pdf.setFontSize(18);
-        pdf.text("MAVERICKS TRAINING PERFORMANCE REPORT", 105, y, { align: "center" });
+    pdf.setFontSize(18);
+    pdf.text("MAVERICKS TRAINING PERFORMANCE REPORT", 105, y, { align: "center" });
 
-        y += 10;
-        pdf.setFontSize(10);
-        pdf.setFont("helvetica", "normal");
-        pdf.text("Generated on: " + new Date().toLocaleString(), 105, y, { align: "center" });
+    y += 10;
+    pdf.setFontSize(10);
+    pdf.text("Generated on: " + new Date().toLocaleString(), 105, y, { align: "center" });
 
-        y += 10;
-        pdf.line(20, y, 190, y);
-        y += 15;
+    y += 15;
 
-        // CANDIDATE DETAILS
-        pdf.setFont("helvetica", "bold");
-        pdf.setFontSize(14);
-        pdf.text("Candidate Information", 20, y);
+    pdf.setFontSize(14);
+    pdf.text("Candidate Information", 20, y);
 
-        y += 10;
-        pdf.setFont("helvetica", "normal");
-        pdf.setFontSize(11);
+    y += 10;
+    pdf.setFontSize(11);
 
-        const details = [
-            ["Name:", name],
-            ["Employee ID:", empid],
-            ["Department:", dept],
-            ["Role:", role],
-            ["Training Phase:", phase]
-        ];
+    pdf.text("Name: " + name, 20, y);
+    y += 8;
 
-        details.forEach(detail => {
-            pdf.text(detail[0], 20, y);
-            pdf.text(detail[1], 70, y);
-            y += 8;
-        });
+    pdf.text("Employee ID: " + empid, 20, y);
+    y += 8;
 
-        pdf.text("Certifications:", 20, y);
-        const splitCerts = pdf.splitTextToSize(certs, 120);
-        pdf.text(splitCerts, 70, y);
-        y += (splitCerts.length * 6) + 5;
+    pdf.text("Department: " + dept, 20, y);
+    y += 8;
 
-        // ASSESSMENT SECTION
-        pdf.setFont("helvetica", "bold");
-        pdf.setFontSize(14);
-        pdf.text("Assessment Performance", 20, y);
+    pdf.text("Role: " + role, 20, y);
+    y += 8;
 
-        y += 10;
-        pdf.setFont("helvetica", "normal");
-        pdf.setFontSize(11);
+    pdf.text("Training Phase: " + phase, 20, y);
+    y += 8;
 
-        const scores = [
-            ["Quiz Score:", quiz + " %"],
-            ["Coding Score:", coding + " %"],
-            ["Assignment Score:", assignment + " %"],
-            ["Overall Performance:", currentOverallScore + " %"],
-            ["Skill Level:", currentSkillLevel]
-        ];
+    pdf.text("Certifications: " + certs, 20, y);
+    y += 15;
 
-        scores.forEach(score => {
-            pdf.text(score[0], 20, y);
-            pdf.text(score[1], 70, y);
-            y += 8;
-        });
+    pdf.setFontSize(14);
+    pdf.text("Assessment Scores", 20, y);
 
-        y += 10;
+    y += 10;
+    pdf.setFontSize(11);
 
-        // SUMMARY
-        pdf.setFont("helvetica", "bold");
-        pdf.setFontSize(14);
-        pdf.text("Professional Summary", 20, y);
+    pdf.text("Quiz Score: " + quiz + "%", 20, y);
+    y += 8;
 
-        y += 10;
-        pdf.setFont("helvetica", "normal");
-        pdf.setFontSize(11);
+    pdf.text("Coding Score: " + coding + "%", 20, y);
+    y += 8;
 
-        const summaryText = `${name} has successfully completed the ${phase} under the Mavericks Training Program in the ${dept} department. The candidate has demonstrated ${currentSkillLevel.toLowerCase()} level competency across all technical modules.
+    pdf.text("Assignment Score: " + assignment + "%", 20, y);
+    y += 8;
 
-Recruitment Feedback:
-${currentFeedbackText}
+    pdf.text("Overall Performance: " + currentOverallScore + "%", 20, y);
+    y += 8;
 
-The candidate exhibits the required adaptability and technical proficiency for corporate alignment.`;
+    pdf.text("Skill Level: " + currentSkillLevel, 20, y);
+    y += 15;
 
-        const splitSummary = pdf.splitTextToSize(summaryText, 170);
-        pdf.text(splitSummary, 20, y);
+    pdf.text("Recruitment Feedback:", 20, y);
+    y += 8;
 
-        // FOOTER
-        pdf.setFontSize(9);
-        pdf.setTextColor(100);
-        pdf.text("Mavericks Fresher Reporting System | Confidential Internal Document", 105, 285, { align: "center" });
+    const feedback = pdf.splitTextToSize(currentFeedbackText, 170);
+    pdf.text(feedback, 20, y);
 
-        pdf.save(`${name.replace(/\s+/g, '_')}_Training_Report.pdf`);
-    };
-
+    pdf.save(name + "_Training_Report.pdf");
+};
     // Certificate Generation Logic
     window.generateCertificate = function() {
         if (!window.jspdf) return;
