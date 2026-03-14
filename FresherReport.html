@@ -206,11 +206,11 @@
         document.getElementById("skill").innerText = currentSkillLevel;
         document.getElementById("feedback").innerText = currentFeedbackText;
     };
+       window.downloadPDF = function() {
 
-   window.downloadPDF = function() {
+     alert("PDF function started");   // add this line
 
-    const { jsPDF } = window.jspdf;
-    const pdf = new jsPDF();
+     const { jsPDF } = window.jspdf;
 
     const name = document.getElementById("name").value || "Candidate";
     const empid = document.getElementById("empid").value || "-";
