@@ -374,7 +374,7 @@ onAuthStateChanged(auth, async (user) => {
         document.getElementById("name").innerText = data.name || "No Name";
 
         // GET EMPLOYEE ID
-        const empId = data.employee_id || data.employeeId || "EMP1001";
+        const empId = data.employee_id || data.employeeId || "EMP240728";
 
         // LOAD SCORES FROM FIREBASE
         loadScores(empId);
